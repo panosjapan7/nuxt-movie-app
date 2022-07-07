@@ -95,12 +95,29 @@
 import axios from "axios"
 import Loading from "../components/Loading.vue"
 export default {
-    data() {
-        return {
-            movies: [],
-            searchedMovies: [],
-            searchInput: "",
-        };
+  head() {
+    return {
+      title: "Movie App - Latest Streaming Movie Info",
+      meta: [ 
+        {
+          hid: "description",
+          name: "description",
+          content: "Get all the latest streaming movies in theaters & online",
+        },
+        {
+          hid: "keywords",
+          name: "keywords",
+          content: "movies, stream, streaming",
+        },
+      ]
+    }
+  },
+  data() {
+      return {
+          movies: [],
+          searchedMovies: [],
+          searchInput: "",
+      };
     },
     async fetch() {
         if (this.searchInput === "") {
