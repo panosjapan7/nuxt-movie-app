@@ -14,8 +14,11 @@
       <button @click="clearSearch" v-show="searchInput !==''" class="button">Clear Search</button>
     </div>
 
+    <!-- Loading -->
+    <Loading v-if="$fetchState.pending" />
+
     <!-- Movies -->
-    <div class="container movies">
+    <div v-else class="container movies">
       
       <!-- Search Movies -->
       <div v-if="searchInput !== ''" id="movies-grid" class="movies-grid">
@@ -90,49 +93,43 @@
 
 <script>
 import axios from "axios"
+import Loading from "../components/Loading.vue"
 export default {
-  data() {
-    return {
-      movies: [],
-      searchedMovies: [],
-      searchInput: "",
-    }
-  },
-
-  async fetch() {
-
-    if (this.searchInput === "") {
-      await this.getMovies()
-      return
-    }
-
-    await this.searchMovies()
-  },
-
-  methods: {
-    async getMovies() {
-      const data = axios.get("https://api.themoviedb.org/3/movie/now_playing?api_key=238cb64db6302e7587f0099a49af4b3d&language=en-US$page=1")
-      const result = await data
-      result.data.results.forEach((movie) => {
-        this.movies.push(movie)
-      })
+    data() {
+        return {
+            movies: [],
+            searchedMovies: [],
+            searchInput: "",
+        };
     },
-
-    async searchMovies () {
-      const data = axios.get(
-        `https://api.themoviedb.org/3/search/movie?api_key=238cb64db6302e7587f0099a49af4b3d&language=en-US&page=1&query=${this.searchInput}`
-      )
-      const result = await data
-      result.data.results.forEach((movie) => {
-        this.searchedMovies.push(movie)
-      })
+    async fetch() {
+        if (this.searchInput === "") {
+            await this.getMovies();
+            return;
+        }
+        await this.searchMovies();
     },
-
-    clearSearch () {
-      this.searchInput = ""
-      this.searchedMovies = []
-    }
-  },
+    methods: {
+        async getMovies() {
+            const data = axios.get("https://api.themoviedb.org/3/movie/now_playing?api_key=238cb64db6302e7587f0099a49af4b3d&language=en-US$page=1");
+            const result = await data;
+            result.data.results.forEach((movie) => {
+                this.movies.push(movie);
+            });
+        },
+        async searchMovies() {
+            const data = axios.get(`https://api.themoviedb.org/3/search/movie?api_key=238cb64db6302e7587f0099a49af4b3d&language=en-US&page=1&query=${this.searchInput}`);
+            const result = await data;
+            result.data.results.forEach((movie) => {
+                this.searchedMovies.push(movie);
+            });
+        },
+        clearSearch() {
+            this.searchInput = "";
+            this.searchedMovies = [];
+        }
+    },
+    components: { Loading }
 }
 </script>
 
