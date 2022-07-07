@@ -20,7 +20,7 @@
     <!-- Movies -->
     <div v-else class="container movies">
       
-      <!-- Search Movies -->
+      <!-- Searched Movies -->
       <div v-if="searchInput !== ''" id="movies-grid" class="movies-grid">
         <div v-for="(movie, index) in searchedMovies" :key="index" class="movie">
           
@@ -116,6 +116,7 @@ export default {
             result.data.results.forEach((movie) => {
                 this.movies.push(movie);
             });
+            console.log("Hi")
         },
         async searchMovies() {
             const data = axios.get(`https://api.themoviedb.org/3/search/movie?api_key=238cb64db6302e7587f0099a49af4b3d&language=en-US&page=1&query=${this.searchInput}`);
